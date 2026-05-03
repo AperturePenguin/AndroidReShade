@@ -1,0 +1,9 @@
+id=reshade_android
+name=AndroidReShade
+version=v1.0
+versionCode=1
+author=AndroidReShade
+description=实时游戏滤镜系统 - 类 PC ReShade 的后处理注入框架
+
+# 需要 Zygisk
+zygisk=true

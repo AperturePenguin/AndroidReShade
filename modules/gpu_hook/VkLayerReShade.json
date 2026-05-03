@@ -1,0 +1,20 @@
+{
+    "file_format_version": "1.0.0",
+    "layer": {
+        "name": "VK_LAYER_RESHADE_android",
+        "type": "GLOBAL",
+        "library_path": "libVkLayerReShade.so",
+        "api_version": "1.1.0",
+        "implementation_version": "1",
+        "description": "AndroidReShade post-processing layer for OpenGL/Vulkan games",
+        "functions": {
+            "vkGetInstanceProcAddr": "ReShade_vkGetInstanceProcAddr",
+            "vkGetDeviceProcAddr":   "ReShade_vkGetDeviceProcAddr"
+        },
+        "enable_environment": {
+            "ENABLE_RESHADE_LAYER": "1"
+        },
+        "instance_extensions": [],
+        "device_extensions": []
+    }
+}

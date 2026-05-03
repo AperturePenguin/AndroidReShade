@@ -1,0 +1,121 @@
+name: Build AndroidReShade APK
+
+# 触发条件：push 到 main/master/dev 分支、PR、手动触发
+on:
+  push:
+    branches: [ main, master, dev ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      # ================================================================
+      # 1. 检出代码
+      # ================================================================
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # ================================================================
+      # 2. 设置 JDK 17（Gradle 8.4 需要）
+      # ================================================================
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # ================================================================
+      # 3. 设置 Android SDK + NDK 27.2 + CMake 3.22.1
+      # ================================================================
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install NDK and CMake
+        run: |
+          sdkmanager "ndk;27.2.12479018" "cmake;3.22.1"
+
+      - name: Export NDK env
+        run: |
+          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/27.2.12479018" >> $GITHUB_ENV
+          echo "NDK_ROOT=$ANDROID_HOME/ndk/27.2.12479018" >> $GITHUB_ENV
+
+      # ================================================================
+      # 4. 下载缺失的第三方头文件（CI 仓库里没有）
+      # ================================================================
+      - name: Download stb_image.h
+        run: |
+          mkdir -p app/src/main/cpp/third_party/stb
+          curl -L -o app/src/main/cpp/third_party/stb/stb_image.h \
+            "https://raw.githubusercontent.com/nothings/stb/master/stb_image.h"
+
+      - name: Download zygisk.hpp
+        run: |
+          mkdir -p module/src/main/cpp/include
+          curl -L -o module/src/main/cpp/include/zygisk.hpp \
+            "https://raw.githubusercontent.com/topjohnwu/zygisk-module-sample/master/module/jni/zygisk.hpp"
+
+      # ================================================================
+      # 5. 赋予 gradlew 执行权限
+      # ================================================================
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      # ================================================================
+      # 6. 编译 Debug APK
+      # ================================================================
+      - name: Build Debug APK
+        run: |
+          ./gradlew assembleDebug --no-daemon --stacktrace \
+            -Dorg.gradle.jvmargs="-Xmx4g"
+
+      # ================================================================
+      # 7. 上传 Debug APK（保留 30 天）
+      # ================================================================
+      - name: Upload Debug APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: AndroidReShade-debug-build-${{ github.run_number }}
+          path: app/build/outputs/apk/debug/*.apk
+          retention-days: 30
+          if-no-files-found: ignore
+
+      # ================================================================
+      # 8. 编译 Release APK
+      # ================================================================
+      - name: Build Release APK
+        run: |
+          ./gradlew assembleRelease --no-daemon --stacktrace \
+            -Dorg.gradle.jvmargs="-Xmx4g"
+
+      # ================================================================
+      # 9. 上传 Release APK（保留 90 天）
+      # ================================================================
+      - name: Upload Release APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: AndroidReShade-release-build-${{ github.run_number }}
+          path: app/build/outputs/apk/release/*.apk
+          retention-days: 90
+          if-no-files-found: ignore
+
+      # ================================================================
+      # 10. 打了 Git Tag 时自动创建 GitHub Release
+      # ================================================================
+      - name: Extract tag name
+        if: startsWith(github.ref, 'refs/tags/')
+        run: echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: app/build/outputs/apk/release/*.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

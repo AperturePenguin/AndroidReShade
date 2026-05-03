@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="280dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#CC0A0A2E"
+    android:elevation="8dp">
+
+    <!-- 标题栏（可拖拽）-->
+    <LinearLayout
+        android:id="@+id/titleBar"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="#E94560"
+        android:gravity="center_vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="8dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="⚡ ReShade"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:textSize="14sp"/>
+
+        <Switch
+            android:id="@+id/switchEnable"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:thumbTint="#fff"/>
+
+        <Button
+            android:id="@+id/btnMinimize"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:text="▲"
+            android:textSize="10sp"
+            android:backgroundTint="@android:color/transparent"
+            android:textColor="#fff"
+            android:padding="0dp"/>
+    </LinearLayout>
+
+    <!-- 参数面板（可折叠）-->
+    <ScrollView
+        android:id="@+id/panelContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="400dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <!-- 亮度 -->
+            <include layout="@layout/item_seekbar"
+                android:id="@+id/rowBrightness"/>
+            <!-- 对比度 -->
+            <include layout="@layout/item_seekbar"
+                android:id="@+id/rowContrast"/>
+            <!-- 饱和度 -->
+            <include layout="@layout/item_seekbar"
+                android:id="@+id/rowSaturation"/>
+            <!-- 锐化 -->
+            <include layout="@layout/item_seekbar"
+                android:id="@+id/rowSharpness"/>
+            <!-- 暗角 -->
+            <include layout="@layout/item_seekbar"
+                android:id="@+id/rowVignette"/>
+            <!-- Gamma -->
+            <include layout="@layout/item_seekbar"
+                android:id="@+id/rowGamma"/>
+            <!-- LUT 强度 -->
+            <include layout="@layout/item_seekbar"
+                android:id="@+id/rowLUTStrength"/>
+
+            <!-- 单独 SeekBar（OverlayService 直接用 id 查找）-->
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="亮度" android:textColor="#aaa" android:textSize="11sp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <SeekBar android:id="@+id/sbBrightness"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:max="200" android:progress="100"/>
+                <TextView android:id="@+id/tvBrightnessVal"
+                    android:layout_width="36dp" android:layout_height="wrap_content"
+                    android:text="100" android:textColor="#fff" android:textSize="11sp"
+                    android:gravity="end"/>
+            </LinearLayout>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="对比度" android:textColor="#aaa" android:textSize="11sp"
+                android:paddingTop="6dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <SeekBar android:id="@+id/sbContrast"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:max="300" android:progress="100"/>
+                <TextView android:id="@+id/tvContrastVal"
+                    android:layout_width="36dp" android:layout_height="wrap_content"
+                    android:text="100" android:textColor="#fff" android:textSize="11sp"
+                    android:gravity="end"/>
+            </LinearLayout>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="饱和度" android:textColor="#aaa" android:textSize="11sp"
+                android:paddingTop="6dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <SeekBar android:id="@+id/sbSaturation"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:max="300" android:progress="100"/>
+                <TextView android:id="@+id/tvSaturationVal"
+                    android:layout_width="36dp" android:layout_height="wrap_content"
+                    android:text="100" android:textColor="#fff" android:textSize="11sp"
+                    android:gravity="end"/>
+            </LinearLayout>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="锐化" android:textColor="#aaa" android:textSize="11sp"
+                android:paddingTop="6dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <SeekBar android:id="@+id/sbSharpness"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:max="500" android:progress="0"/>
+                <TextView android:id="@+id/tvSharpnessVal"
+                    android:layout_width="36dp" android:layout_height="wrap_content"
+                    android:text="0" android:textColor="#fff" android:textSize="11sp"
+                    android:gravity="end"/>
+            </LinearLayout>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="暗角" android:textColor="#aaa" android:textSize="11sp"
+                android:paddingTop="6dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <SeekBar android:id="@+id/sbVignette"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:max="100" android:progress="0"/>
+                <TextView android:id="@+id/tvVignetteVal"
+                    android:layout_width="36dp" android:layout_height="wrap_content"
+                    android:text="0" android:textColor="#fff" android:textSize="11sp"
+                    android:gravity="end"/>
+            </LinearLayout>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="Gamma" android:textColor="#aaa" android:textSize="11sp"
+                android:paddingTop="6dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <SeekBar android:id="@+id/sbGamma"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:max="300" android:progress="100"/>
+                <TextView android:id="@+id/tvGammaVal"
+                    android:layout_width="36dp" android:layout_height="wrap_content"
+                    android:text="100" android:textColor="#fff" android:textSize="11sp"
+                    android:gravity="end"/>
+            </LinearLayout>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:text="LUT 强度" android:textColor="#aaa" android:textSize="11sp"
+                android:paddingTop="6dp"/>
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <SeekBar android:id="@+id/sbLUTStrength"
+                    android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:max="100" android:progress="100"/>
+                <TextView android:id="@+id/tvLUTStrengthVal"
+                    android:layout_width="36dp" android:layout_height="wrap_content"
+                    android:text="100" android:textColor="#fff" android:textSize="11sp"
+                    android:gravity="end"/>
+            </LinearLayout>
+
+            <!-- 重置 -->
+            <Button
+                android:id="@+id/btnReset"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:text="重置所有参数"
+                android:backgroundTint="#333"
+                android:textColor="#E94560"
+                android:textSize="12sp"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

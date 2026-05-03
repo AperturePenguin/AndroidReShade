@@ -1,0 +1,10 @@
+##################################
+# Magisk 模块元信息
+##################################
+id=android_reshade
+name=AndroidReShade
+version=v1.0.0
+versionCode=100
+author=AndroidReShade Team
+description=Real-time game shader injection for Android (OpenGL ES / Vulkan). Supports ReShade .fx shaders and LUT files.
+minMagisk=24000

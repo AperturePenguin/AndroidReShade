@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A1A2E">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- 标题栏 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="⚡ Android ReShade"
+            android:textColor="#E94560"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="实时游戏后处理滤镜系统 (Root)"
+            android:textColor="#888"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:paddingBottom="16dp"/>
+
+        <!-- 目标包名 -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="目标游戏包名" android:textColor="#ccc" android:textSize="14sp"
+            android:paddingBottom="4dp"/>
+
+        <EditText
+            android:id="@+id/etTargetPackage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="com.example.game"
+            android:textColor="#fff"
+            android:textColorHint="#555"
+            android:background="#16213E"
+            android:padding="12dp"
+            android:inputType="text"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- 状态 -->
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="就绪"
+            android:textColor="#0F3460"
+            android:background="#E94560"
+            android:padding="8dp"
+            android:gravity="center"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- 操作按钮 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/btnStartOverlay"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="启动悬浮窗"
+                android:backgroundTint="#E94560"
+                android:textColor="#fff"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btnPickShader"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="导入 Shader"
+                android:backgroundTint="#0F3460"
+                android:textColor="#fff"
+                android:layout_marginEnd="8dp"/>
+
+            <Button
+                android:id="@+id/btnPickLUT"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="导入 LUT"
+                android:backgroundTint="#533483"
+                android:textColor="#fff"/>
+        </LinearLayout>
+
+        <!-- Shader 列表 -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="📁 Shader 列表（/sdcard/ReShade/shaders/）"
+            android:textColor="#ccc" android:textSize="13sp" android:paddingBottom="4dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvShaders"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:background="#16213E"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- LUT 列表 -->
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="🎨 LUT 列表（/sdcard/ReShade/luts/）"
+            android:textColor="#ccc" android:textSize="13sp" android:paddingBottom="4dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLuts"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:background="#16213E"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- 使用说明 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="使用说明：\n① 将 .fx/.hlsl 放入 /sdcard/ReShade/shaders/\n② 将 .cube/.png 放入 /sdcard/ReShade/luts/\n③ 填写游戏包名 → 启动悬浮窗\n④ 通过悬浮面板实时调节参数\n\n需要：Magisk + Zygisk 模块安装"
+            android:textColor="#888"
+            android:textSize="12sp"
+            android:background="#111"
+            android:padding="12dp"/>
+
+    </LinearLayout>
+</ScrollView>

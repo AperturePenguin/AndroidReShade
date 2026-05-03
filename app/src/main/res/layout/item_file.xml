@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="#1A1A2E"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <TextView
+        android:id="@android:id/text1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#ccc"
+        android:textSize="12sp"
+        android:ellipsize="middle"
+        android:singleLine="true"/>
+
+    <Button
+        android:id="@android:id/button1"
+        android:layout_width="60dp"
+        android:layout_height="32dp"
+        android:text="应用"
+        android:textSize="11sp"
+        android:backgroundTint="#E94560"
+        android:textColor="#fff"
+        android:padding="0dp"/>
+
+</LinearLayout>
